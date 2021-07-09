@@ -39,6 +39,7 @@
 
 #include <QtPdfWidgets/qtpdfwidgetsglobal.h>
 #include <QtWidgets/qabstractscrollarea.h>
+#include <QPdfDocumentRenderOptions>
 
 QT_BEGIN_NAMESPACE
 
@@ -58,6 +59,7 @@ class Q_PDF_WIDGETS_EXPORT QPdfView : public QAbstractScrollArea
 
     Q_PROPERTY(int pageSpacing READ pageSpacing WRITE setPageSpacing NOTIFY pageSpacingChanged)
     Q_PROPERTY(QMargins documentMargins READ documentMargins WRITE setDocumentMargins NOTIFY documentMarginsChanged)
+    Q_PROPERTY(QPdfDocumentRenderOptions documentRenderOptions READ documentRenderOptions WRITE setDocumentRenderOptions NOTIFY documentRenderOptionsChanged)
 
 public:
     enum PageMode
@@ -93,6 +95,9 @@ public:
     QMargins documentMargins() const;
     void setDocumentMargins(QMargins margins);
 
+    QPdfDocumentRenderOptions documentRenderOptions() const;
+    void setDocumentRenderOptions(QPdfDocumentRenderOptions renderOptions);
+
 public Q_SLOTS:
     void setPageMode(PageMode mode);
     void setZoomMode(ZoomMode mode);
@@ -105,6 +110,7 @@ Q_SIGNALS:
     void zoomFactorChanged(qreal zoomFactor);
     void pageSpacingChanged(int pageSpacing);
     void documentMarginsChanged(QMargins documentMargins);
+    void documentRenderOptionsChanged(QPdfDocumentRenderOptions renderOptions);
 
 protected:
     explicit QPdfView(QPdfViewPrivate &, QWidget *);

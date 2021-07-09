@@ -97,6 +97,8 @@ public:
     int m_pageSpacing;
     QMargins m_documentMargins;
 
+    QPdfDocumentRenderOptions m_documentRenderOptions;
+
     bool m_blockPageScrolling;
 
     QMetaObject::Connection m_documentStatusChangedConnection;

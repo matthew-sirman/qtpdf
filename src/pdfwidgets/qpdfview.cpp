@@ -58,6 +58,7 @@ QPdfViewPrivate::QPdfViewPrivate()
     , m_zoomFactor(1.0)
     , m_pageSpacing(3)
     , m_documentMargins(6, 6, 6, 6)
+    , m_documentRenderOptions()
     , m_blockPageScrolling(false)
     , m_pageCacheLimit(20)
     , m_screenResolution(QGuiApplication::primaryScreen()->logicalDotsPerInch() / 72.0)
@@ -444,6 +445,24 @@ void QPdfView::setDocumentMargins(QMargins margins)
     emit documentMarginsChanged(d->m_documentMargins);
 }
 
+QPdfDocumentRenderOptions QPdfView::documentRenderOptions() const {
+    Q_D(const QPdfView);
+
+    return d->m_documentRenderOptions;
+}
+
+void QPdfView::setDocumentRenderOptions(QPdfDocumentRenderOptions renderOptions) {
+    Q_D(QPdfView);
+
+    if (d->m_documentRenderOptions == renderOptions)
+        return;
+
+    d->m_documentRenderOptions = renderOptions;
+    d->invalidateDocumentLayout();
+
+    emit documentRenderOptionsChanged(d->m_documentRenderOptions);
+}
+
 void QPdfView::paintEvent(QPaintEvent *event)
 {
     Q_D(QPdfView);
@@ -463,7 +482,7 @@ void QPdfView::paintEvent(QPaintEvent *event)
                 const QImage &img = pageIt.value();
                 painter.drawImage(pageGeometry.topLeft(), img);
             } else {
-                d->m_pageRenderer->requestPage(page, pageGeometry.size());
+                d->m_pageRenderer->requestPage(page, pageGeometry.size(), d->m_documentRenderOptions);
             }
         }
     }
